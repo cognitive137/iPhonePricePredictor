@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silicon Chain: iPhone Price Forecaster</title>
+    <style>
+        body { background: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; padding: 2rem; margin: 0; }
+        .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .panel { background: #1e293b; padding: 2rem; border-radius: 12px; border: 1px solid #334155; }
+        h1, h2 { color: #38bdf8; margin-top: 0; }
+        label { display: block; margin: 1rem 0 0.5rem; font-weight: 600; color: #94a3b8; }
+        select, input[type="range"] { width: 100%; padding: 0.5rem; border-radius: 6px; background: #334155; color: white; border: 1px solid #475569; box-sizing: border-box; }
+        .slider-val { float: right; color: #38bdf8; }
+        .forecast-card { background: #334155; padding: 1.5rem; border-radius: 8px; margin-top: 1rem; border-left: 6px solid #38bdf8; }
+        .price-up { color: #f43f5e; font-weight: bold; }
+        .price-stable { color: #34d399; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h1>📈 Silicon Chain Predictive Engine</h1>
+        <p>Model how real-time supply chain component shocks dictate retail pricing trends over a 6-month horizon.</p>
+    </div>
+
+    <div class="grid">
+        <!-- Input Panel -->
+        <div class="panel">
+            <h2>Supply Parameters</h2>
+            
+            <label for="model-select">Target iPhone Model</label>
+            <select id="model-select" onchange="calculateForecast()">
+                <option value="duo">iPhone Duo (Foldable) - Base \$1,999</option>
+                <option value="proMax">iPhone 18 Pro Max - Base \$1,299</option>
+                <option value="pro">iPhone 18 Pro - Base \$1,199</option>
+                <option value="air">iPhone Air - Base \$1,099</option>
+                <option value="i17">iPhone 17 - Base \$899</option>
+                <option value="i17e">iPhone 17e - Base \$699</option>
+            </select>
+
+            <label>Lithography Capacity (ASML 2nm/3nm Nodes) <span id="litho-val" class="slider-val">0%</span></label>
+            <input type="range" id="litho" min="-30" max="30" value="0" oninput="updateSlider('litho')">
+
+            <label>Wafer Fabrication Output (TSMC) <span id="fab-val" class="slider-val">0%</span></label>
+            <input type="range" id="fab" min="-30" max="30" value="0" oninput="updateSlider('fab')">
+
+            <label>Advanced Packaging Yields (CoWoS) <span id="pkg-val" class="slider-val">0%</span></label>
+            <input type="range" id="pkg" min="-30" max="30" value="0" oninput="updateSlider('pkg')">
+
+            <label>Global Freight & Logistics Cost <span id="log-val" class="slider-val">0%</span></label>
+            <input type="range" id="log" min="-30" max="30" value="0" oninput="updateSlider('log')">
+        </div>
+
+        <!-- Output Forecast Panel -->
+        <div class="panel">
+            <h2>6-Month Market Price Prediction</h2>
+            <div id="forecast-output"></div>
+        </div>
+    </div>
+
+    <script>
+        // Define the structural Bill-of-Materials (BOM) allocation for each Apple model
+        const modelComponentMatrix = {
+            duo:   { premiumNodes: 0.40, packaging: 0.25, specialtyHinges: 0.25, baseLogistics: 0.10 }, 
+            proMax:{ premiumNodes: 0.45, packaging: 0.35, specialtyHinges: 0.00, baseLogistics: 0.20 }, 
+            pro:   { premiumNodes: 0.45, packaging: 0.30, specialtyHinges: 0.00, baseLogistics: 0.25 }, 
+            air:   { premiumNodes: 0.30, packaging: 0.20, specialtyHinges: 0.00, baseLogistics: 0.50 }, 
+            i17:   { premiumNodes: 0.20, packaging: 0.10, specialtyHinges: 0.00, baseLogistics: 0.70 }, 
+            i17e:  { premiumNodes: 0.10, packaging: 0.05, specialtyHinges: 0.00, baseLogistics: 0.85 }  
+        };
+
+        const basePrices = { duo: 1999, proMax: 1299, pro: 1199, air: 1099, i17: 899, i17e: 699 };
+
+        function updateSlider(id) {
+            document.getElementById(`${id}-val`).innerText = (document.getElementById(id).value > 0 ? '+' : '') + document.getElementById(id).value + '%';
+            calculateForecast();
+        }
+
+        function calculateForecast() {
+            const model = document.getElementById("model-select").value;
+            const base = basePrices[model];
+            const matrix = modelComponentMatrix[model];
+
+            // Grab raw real-time slider inputs representing current market headline adjustments
+            const lithoShock = parseFloat(document.getElementById("litho").value) * -1; 
+            const fabShock   = parseFloat(document.getElementById("fab").value) * -1;   
+            const pkgShock   = parseFloat(document.getElementById("pkg").value) * -1;   
+            const logShock   = parseFloat(document.getElementById("log").value) * -1;   
+
+            // Multiply the headline shock by that specific model's architectural reliance
+            const weightedLithoLoss = lithoShock * matrix.premiumNodes;
+            const weightedFabLoss   = fabShock   * matrix.premiumNodes;
+            const weightedPkgLoss   = pkgShock   * matrix.packaging;
+            const weightedLogLoss   = logShock   * matrix.baseLogistics;
+
+            // Premium foldable penalty loop calculation
+            const hingeOverhead = (model === 'duo') ? (lithoShock * matrix.specialtyHinges * 1.5) : 0;
+
+            const aggregateSupplyShock = weightedLithoLoss + weightedFabLoss + weightedPkgLoss + weightedLogLoss + hingeOverhead;
+            
+            let html = '';
+            for(let month = 1; month <= 6; month++) {
+                // Compound the pass-through cost friction linearly over the 6-month timeline
+                const timelineInflationFactor = (aggregateSupplyShock / 100) * (month / 6);
+                const projectedPrice = Math.round(base * (1 + timelineInflationFactor));
+                const priceDiff = projectedPrice - base;
+                
+                let priceClass = "price-stable";
+                let icon = "📉 Trend: Stable / Margin Absorption";
+                if (priceDiff > 0) {
+                    priceClass = "price-up";
+                    icon = "🔺 Trend: Supply Chain Cost Pass-Through";
+                }
+
+                html += `
+                    <div class="forecast-card">
+                        <h3>Month ${month} Horizon</h3>
+                        <p>Projected Retail Price: <strong>$${projectedPrice} USD</strong></p>
+                        <p class="${priceClass}">${icon} (MSRP Delta: $${priceDiff >= 0 ? '+' : ''}${priceDiff} USD)</p>
+                    </div>
+                `;
+            }
+            document.getElementById("forecast-output").innerHTML = html;
+        }
+
+        // Run calculation instantly on first window paint
+        calculateForecast();
+    </script>
+</body>
+</html>
