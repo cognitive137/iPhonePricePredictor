@@ -3,63 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silicon Chain: iPhone Price Forecaster</title>
+    <title>Silicon Chain: iPhone Price Forecaster & Academy</title>
     <style>
-        body { background: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; padding: 2rem; margin: 0; }
-        .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .panel { background: #1e293b; padding: 2rem; border-radius: 12px; border: 1px solid #334155; }
-        h1, h2 { color: #38bdf8; margin-top: 0; }
-        label { display: block; margin: 1rem 0 0.5rem; font-weight: 600; color: #94a3b8; }
-        select, input[type="range"] { width: 100%; padding: 0.5rem; border-radius: 6px; background: #334155; color: white; border: 1px solid #475569; box-sizing: border-box; }
-        .slider-val { float: right; color: #38bdf8; }
-        .forecast-card { background: #334155; padding: 1.5rem; border-radius: 8px; margin-top: 1rem; border-left: 6px solid #38bdf8; }
-        .price-up { color: #f43f5e; font-weight: bold; }
-        .price-stable { color: #34d399; font-weight: bold; }
+        body { 
+            background: #2e3029; 
+            color: #eae5d9; 
+            font-family: "Georgia", "Times New Roman", serif; 
+            padding: 2rem; 
+            margin: 0; 
+            line-height: 1.6; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 3rem; }
+        .panel { 
+            background: #1c2017; 
+            padding: 2rem; 
+            border-radius: 6px; 
+            border: 1px solid #4a4d40; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        h1, h2, h3 { color: #c4a468; font-family: "Georgia", serif; font-weight: normal; margin-top: 0; }
+        h1 { text-align: center; font-size: 2.5rem; margin-bottom: 2rem; border-bottom: 1px solid #4a4d40; padding-bottom: 1rem; }
+        label { display: block; margin: 1rem 0 0.5rem; font-weight: 600; color: #a39e8e; }
+        select, input[type="range"] { 
+            width: 100%; 
+            padding: 0.6rem; 
+            border-radius: 4px; 
+            background: #2e3029; 
+            color: #eae5d9; 
+            border: 1px solid #5c6150; 
+            box-sizing: border-box; 
+        }
+        .slider-val { float: right; color: #c4a468; font-weight: bold; }
+        .forecast-card { 
+            background: #24291e; 
+            padding: 1.5rem; 
+            border-radius: 4px; 
+            margin-top: 1rem; 
+            border-left: 6px solid #4e6e53; 
+            border-top: 1px solid #4a4d40;
+            border-right: 1px solid #4a4d40;
+            border-bottom: 1px solid #4a4d40;
+        }
+        .price-up { color: #b85a3a; font-weight: bold; }
+        .price-stable { color: #708d77; font-weight: bold; }
+        
+        hr { border: 0; height: 1px; background: #4a4d40; margin: 4rem 0; }
+        .academy-title { text-align: center; margin-bottom: 3rem; }
+        .academy-title h2 { font-size: 2.3rem; color: #879b7d; }
+        .timeline { display: flex; flex-direction: column; gap: 2rem; }
+        .step-card { 
+            background: #1c2017; 
+            border: 1px solid #4a4d40; 
+            border-radius: 6px; 
+            padding: 2rem; 
+        }
+        .step-card h3 { color: #c4a468; border-bottom: 1px solid #363a2e; padding-bottom: 0.5rem; }
+        .step-badge { 
+            background: #4e6e53; 
+            color: #eae5d9; 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 4px; 
+            font-size: 0.85rem; 
+            font-weight: bold; 
+            display: inline-block; 
+            margin-bottom: 0.5rem; 
+        }
+        .history-box { 
+            background: rgba(184, 90, 58, 0.1); 
+            border-left: 4px solid #b85a3a; 
+            padding: 1rem; 
+            border-radius: 4px; 
+            margin-top: 1rem; 
+        }
+        .history-box strong { color: #b85a3a; display: block; margin-bottom: 0.25rem; }
+        
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div style="text-align:center; margin-bottom:2rem;">
-        <h1>📈 Silicon Chain Predictive Engine</h1>
-        <p>Model how real-time supply chain component shocks dictate retail pricing trends over a 6-month horizon.</p>
-    </div>
+    <div class="container">
+        <h1>📊 Silicon Chain Predictive Engine</h1>
 
-    <div class="grid">
-        <!-- Input Panel -->
-        <div class="panel">
-            <h2>Supply Parameters</h2>
-            
-            <label for="model-select">Target iPhone Model</label>
-            <select id="model-select" onchange="calculateForecast()">
-                <option value="duo">iPhone Duo (Foldable) - Base \$1,999</option>
-                <option value="proMax">iPhone 18 Pro Max - Base \$1,299</option>
-                <option value="pro">iPhone 18 Pro - Base \$1,199</option>
-                <option value="air">iPhone Air - Base \$1,099</option>
-                <option value="i17">iPhone 17 - Base \$899</option>
-                <option value="i17e">iPhone 17e - Base \$699</option>
-            </select>
+        <!-- Part 1: Interactive Forecasting Application Simulation -->
+        <div class="grid">
+            <div class="panel">
+                <h2>Supply Parameters</h2>
+                
+                <label for="model-select">Target iPhone Model</label>
+                <select id="model-select" onchange="calculateForecast()">
+                    <option value="duo">iPhone Duo (Foldable) - Base $1,999</option>
+                    <option value="proMax">iPhone 18 Pro Max - Base $1,299</option>
+                    <option value="pro">iPhone 18 Pro - Base $1,199</option>
+                    <option value="air">iPhone Air - Base $1,099</option>
+                    <option value="i17">iPhone 17 - Base $899</option>
+                    <option value="i17e">iPhone 17e - Base $699</option>
+                </select>
 
-            <label>Lithography Capacity (ASML 2nm/3nm Nodes) <span id="litho-val" class="slider-val">0%</span></label>
-            <input type="range" id="litho" min="-30" max="30" value="0" oninput="updateSlider('litho')">
+                <label>Lithography Capacity (ASML 2nm/3nm Nodes) <span id="litho-val" class="slider-val">0%</span></label>
+                <input type="range" id="litho" min="-30" max="30" value="0" oninput="updateSlider('litho')">
 
-            <label>Wafer Fabrication Output (TSMC) <span id="fab-val" class="slider-val">0%</span></label>
-            <input type="range" id="fab" min="-30" max="30" value="0" oninput="updateSlider('fab')">
+                <label>Wafer Fabrication Output (TSMC) <span id="fab-val" class="slider-val">0%</span></label>
+                <input type="range" id="fab" min="-30" max="30" value="0" oninput="updateSlider('fab')">
 
-            <label>Advanced Packaging Yields (CoWoS) <span id="pkg-val" class="slider-val">0%</span></label>
-            <input type="range" id="pkg" min="-30" max="30" value="0" oninput="updateSlider('pkg')">
+                <label>Advanced Packaging Yields (CoWoS) <span id="pkg-val" class="slider-val">0%</span></label>
+                <input type="range" id="pkg" min="-30" max="30" value="0" oninput="updateSlider('pkg')">
 
-            <label>Global Freight & Logistics Cost <span id="log-val" class="slider-val">0%</span></label>
-            <input type="range" id="log" min="-30" max="30" value="0" oninput="updateSlider('log')">
+                <label>Global Freight & Logistics Cost <span id="log-val" class="slider-val">0%</span></label>
+                <input type="range" id="log" min="-30" max="30" value="0" oninput="updateSlider('log')">
+            </div>
+
+            <div class="panel">
+                <h2>6-Month Market Price Prediction</h2>
+                <div id="forecast-output"></div>
+            </div>
         </div>
 
-        <!-- Output Forecast Panel -->
-        <div class="panel">
-            <h2>6-Month Market Price Prediction</h2>
-            <div id="forecast-output"></div>
+        <hr />
+
+        <!-- Part 2: Educational Platform (High-School Explainer Framework) -->
+        <div class="academy-title">
+            <h2>🎓 The Silicon School: How Microchips Are Made</h2>
+            <p style="color: #a39e8e; font-size: 1.1rem; margin-top: 0.5rem;">An accessible, step-by-step masterclass on the most complicated supply chain on Earth, and how it breaks during panic surges.</p>
+        </div>
+
+        <div class="timeline">
+            <!-- Step 1 -->
+            <div class="step-card">
+                <span class="step-badge">Step 1: The Blueprint</span>
+                <h3>Electronic Design Automation (EDA) & Architecture</h3>
+                <p>Before any physical manufacturing starts, companies like Apple use highly specialized software (built by firms like Synopsys and Cadence) to draw the electronic maps for their processors. They pack <strong>billions of microscopic electrical switches called transistors</strong> into a space smaller than a single grain of rice! Think of it like drawing an impossibly detailed street map for an entire microscopic metropolis.</p>
+                <div class="history-box">
+                    <strong>⚠️ Historic Surge Reaction: "The Design Pipeline Lock"</strong>
+                    When tech demands suddenly explode, design teams instantly bottleneck. Because only a handful of senior engineers globally know how to structure bleeding-edge chip nodes, a hiring war erupts. Companies start poaching entire engineering clusters overnight, forcing massive project backlogs and structural engineering delays.
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+                <span class="step-badge">Step 2: The Camera Flash</span>
+                <h3>Extreme Ultraviolet Lithography (EUV) Printing</h3>
+                <p>You cannot print lines smaller than a virus using a physical pen. Instead, a Dutch company named <strong>ASML</strong> builds a giant, $200 million machine that uses ultra-pure laser lights. This machine blasts light onto molten tin droplets to create Extreme Ultraviolet light, which reflects off hyper-precise mirrors to print the microscopic blueprints onto a slab of pure silicon.</p>
+                <div class="history-box">
+                    <strong>⚠️ Historic Surge Reaction: "The 3-Year Waiting List"</strong>
+                    ASML is the <em>only company on earth</em> that can manufacture these extreme lithography machines. During market demand panics, component wait times stretch up to <strong>40 months</strong>. Hardware giants like Apple and Samsung get locked into fierce bidding wars years in advance just to secure their position in the equipment queue.
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card">
+                <span class="step-badge">Step 3: The Bakery</span>
+                <h3>Wafer Fabrication Foundries</h3>
+                <p>This is where raw silicon—refined directly from basic sand—is baked into massive, mirror-polished circular discs called wafers. Foundries like <strong>TSMC</strong> in Taiwan use hundreds of chemical wash, metal wiring, and baking procedures to layer the circuits onto the wafer. This process requires a "Cleanroom" environment that is thousands of times cleaner than an operating room, because a single speck of regular dust can ruin an entire multi-million dollar batch of wafers.</p>
+                <div class="history-box">
+                    <strong>⚠️ Historic Surge Reaction: "The Double-Ordering Illusion"</strong>
+                    Because semiconductor fabrication factories take months to alter production pipelines, they cannot handle sudden surges. When chip supply tightens, car companies, smartphone brands, and medical tech hardware makers enter a panic and buy <strong>double their actual capacity requirements</strong> to build giant protective stockpiles. This creates a massive artificial demand cliff that entirely locks out smaller tech brands.
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card">
+                <span class="step-badge">Step 4: The LEGO Stack</span>
+                <h3>Advanced Packaging & Logic Integration (CoWoS)</h3>
+                <p>Once the circular wafer is completed, it is carefully sliced up into individual square computer chips. However, modern chips cannot operate in isolation. Advanced packaging techniques (such as TSMC's <strong>CoWoS</strong> process) physically layer memory chips and primary processing units on top of each other, binding them together horizontally and vertically like complex 3D LEGO blocks.</p>
+                <div class="history-box">
+                    <strong>⚠️ Historic Surge Reaction: "The Silicon Inflation Squeeze"</strong>
+                    Advanced packaging is the modern bottleneck. Because artificial intelligence servers and advanced mobile graphics chips all oversubscribe the exact same packaging factories, capacity hits a hard ceiling. This forces raw "silicon inflation," driving cost spikes across premium mobile platforms.
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Define the structural Bill-of-Materials (BOM) allocation for each Apple model
         const modelComponentMatrix = {
             duo:   { premiumNodes: 0.40, packaging: 0.25, specialtyHinges: 0.25, baseLogistics: 0.10 }, 
             proMax:{ premiumNodes: 0.45, packaging: 0.35, specialtyHinges: 0.00, baseLogistics: 0.20 }, 
@@ -72,7 +189,8 @@
         const basePrices = { duo: 1999, proMax: 1299, pro: 1199, air: 1099, i17: 899, i17e: 699 };
 
         function updateSlider(id) {
-            document.getElementById(`${id}-val`).innerText = (document.getElementById(id).value > 0 ? '+' : '') + document.getElementById(id).value + '%';
+            const val = document.getElementById(id).value;
+            document.getElementById(id + '-val').innerText = (val > 0 ? '+' : '') + val + '%';
             calculateForecast();
         }
 
@@ -81,49 +199,41 @@
             const base = basePrices[model];
             const matrix = modelComponentMatrix[model];
 
-            // Grab raw real-time slider inputs representing current market headline adjustments
             const lithoShock = parseFloat(document.getElementById("litho").value) * -1; 
             const fabShock   = parseFloat(document.getElementById("fab").value) * -1;   
             const pkgShock   = parseFloat(document.getElementById("pkg").value) * -1;   
             const logShock   = parseFloat(document.getElementById("log").value) * -1;   
 
-            // Multiply the headline shock by that specific model's architectural reliance
             const weightedLithoLoss = lithoShock * matrix.premiumNodes;
             const weightedFabLoss   = fabShock   * matrix.premiumNodes;
             const weightedPkgLoss   = pkgShock   * matrix.packaging;
             const weightedLogLoss   = logShock   * matrix.baseLogistics;
 
-            // Premium foldable penalty loop calculation
             const hingeOverhead = (model === 'duo') ? (lithoShock * matrix.specialtyHinges * 1.5) : 0;
-
             const aggregateSupplyShock = weightedLithoLoss + weightedFabLoss + weightedPkgLoss + weightedLogLoss + hingeOverhead;
             
             let html = '';
             for(let month = 1; month <= 6; month++) {
-                // Compound the pass-through cost friction linearly over the 6-month timeline
                 const timelineInflationFactor = (aggregateSupplyShock / 100) * (month / 6);
                 const projectedPrice = Math.round(base * (1 + timelineInflationFactor));
                 const priceDiff = projectedPrice - base;
                 
                 let priceClass = "price-stable";
-                let icon = "📉 Trend: Stable / Margin Absorption";
+                let icon = "Stable / Margin Absorption";
                 if (priceDiff > 0) {
                     priceClass = "price-up";
-                    icon = "🔺 Trend: Supply Chain Cost Pass-Through";
+                    icon = "Supply Chain Cost Pass-Through";
                 }
 
-                html += `
-                    <div class="forecast-card">
-                        <h3>Month ${month} Horizon</h3>
-                        <p>Projected Retail Price: <strong>$${projectedPrice} USD</strong></p>
-                        <p class="${priceClass}">${icon} (MSRP Delta: $${priceDiff >= 0 ? '+' : ''}${priceDiff} USD)</p>
-                    </div>
-                `;
+                html += '<div class="forecast-card">' +
+                            '<h3>Month ' + month + ' Horizon</h3>' +
+                            '<p>Projected Retail Price: <strong>$' + projectedPrice + ' USD</strong></p>' +
+                            '<p class="' + priceClass + '">Trend: ' + icon + ' (MSRP Delta: ' + (priceDiff >= 0 ? '+' : '') + priceDiff + ' USD)</p>' +
+                        '</div>';
             }
             document.getElementById("forecast-output").innerHTML = html;
         }
 
-        // Run calculation instantly on first window paint
         calculateForecast();
     </script>
 </body>
